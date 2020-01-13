@@ -1,0 +1,70 @@
+"""""""""""""""""""""""""""""""""""""
+" gui
+"""""""""""""""""""""""""""""""""""""
+set vb t_vb=
+
+" let moria_style = 'dark'
+" let moria_monochrome = 1
+" let moria_fontface = 'mixed'
+colorscheme desert
+
+" ---------------------------------------------------------------------------
+" command height to 2
+set cmdheight=2
+
+" Don't display menu bar and tool bar
+set guioptions-=m
+set guioptions-=T
+
+" ------------------------------------------------------------------------------
+" Highlight specific characters
+" Highlight a tab
+" hi tabs guifg=#333333 guibg=#d0d0d0
+" match tabs /\t/
+
+" Highlight full width space
+hi ZenkakuSpace guifg=#555555 guibg=#555555
+match ZenkakuSpace /Å@/
+
+" ------------------------------------------------------------------------------
+" Style
+
+function! DefaultStyle ()
+        " set guifont=Andale\ Mono:h12
+        " set guifont=M+1VM+IPAG_circle:h12:w7:cSHIFTJIS
+        " set guifont=M+2VM+IPAG_circle:h12:w7:cSHIFTJIS
+        " set guifont=ARISAKA-ìôïù:h12:w7:cSHIFTJIS
+        " set guifont=OsakaÅ|ìôïù:h13:w7:cSHIFTJIS
+        " set guifont=Consolas:h12:w7:cSHIFTJIS
+        " set guifont=HG∫ﬁºØ∏M:h10:w5:cSHIFTJIS
+        " set guifont=åÀâzÉSÉVÉbÉN:h13:w7:cSHIFTJIS
+        " set guifont=MS_Mincho:h12:w7:cSHIFTJIS
+        " set guifont=M+2VM+IPAG_circle:h15:w8:cSHIFTJIS
+        " set guifont=M+2VM+IPAG_circle:h12:w7:cSHIFTJIS
+    set linespace=1
+    set antialias
+    " set lines=80
+    set columns=200
+endfunction
+:command! DefaultStyle :call DefaultStyle()
+
+call DefaultStyle()
+
+set t_Co=256
+set background=dark
+
+if (has("termguicolors"))
+  set termguicolors
+endif
+
+let base16colorspace=256  " Access colors present in 256 colorspace
+" colorscheme spacegray
+" colorscheme spacemacs-theme
+colorscheme PaperColor
+
+let g:spacegray_underline_search = 1
+let g:spacegray_italicize_comments = 1
+
+" ------------------------------------------------------------------------------
+set vb t_vb=
+
