@@ -101,6 +101,9 @@ Plugin 'peitalin/vim-jsx-typescript'
 Plugin 'prettier/vim-prettier', { 'do': 'yarn install', 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
 Plugin 'OmniSharp/omnisharp-vim'
 Plugin 'w0rp/ale'
+Plugin 'Quramy/tsuquyomi'
+" Still use the one in plugin folder to keep C-x working
+" Plugin 'preservim/nerdcommenter'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -146,9 +149,6 @@ filetype plugin on
 set ofu=syntaxcomplete#Complete
 " Using indent based on file type
 filetype indent on
-" これらのftではインデントを無効に
-" autocmd FileType php filetype indent off
-" autocmd FileType php :set indentexpr=
 " autocmd FileType html :set indentexpr=
 " autocmd FileType xhtml :set indentexpr=
 
@@ -156,6 +156,7 @@ filetype indent on
 " width of indent
 autocmd FileType xhtml :set sw=2
 autocmd FileType html :set sw=2
+autocmd FileType typescript :set sw=2 ts=2
 
 " ------------------------------------------------------------------------------
 " Programming Support
@@ -309,70 +310,12 @@ function! String2Hex(str)
 endfunc
 
 " ------------------------------------------------------------------------------
-" コマンドライン補完するときに強化されたものを使う(参照 :help wildmenu)
 set wildmenu
-" コマンドライン補間をシェルっぽく
 set wildmode=list:longest
-" バッファが編集中でもその他のファイルを開けるように
 set hidden
-" 外部のエディタで編集中のファイルが変更されたら自動で読み直す
 set autoread
 
-" ------------------------------------------------------------------------------
-" 文字コード関連
-" from ずんWiki http://www.kawaz.jp/pukiwiki/?vim#content_1_7
-" if &encoding !=# 'utf-8'
-  " set encoding=japan
-" endif
-" set fileencoding=japan
-" if has('iconv')
-  " let s:enc_euc = 'euc-jp'
-  " let s:enc_jis = 'iso-2022-jp'
-  " " iconvがJISX0213に対応しているかをチェック
-  " if iconv("\x87\x64\x87\x6a", 'cp932', 'euc-jisx0213') ==# "\xad\xc5\xad\xcb"
-    " let s:enc_euc = 'euc-jisx0213'
-    " let s:enc_jis = 'iso-2022-jp-3'
-  " endif
-  " " fileencodingsを構築
-  " if &encoding ==# 'utf-8'
-    " let s:fileencodings_default = &fileencodings
-    " let &fileencodings = s:enc_jis .','. s:enc_euc .',cp932'
-    " let &fileencodings = &fileencodings .','. s:fileencodings_default
-    " unlet s:fileencodings_default
-  " else
-    " let &fileencodings = &fileencodings .','. s:enc_jis
-    " set fileencodings+=utf-8,ucs-2le,ucs-2
-    " if &encoding =~# '^euc-\%(jp\|jisx0213\)$'
-      " set fileencodings+=cp932
-      " set fileencodings-=euc-jp
-      " set fileencodings-=euc-jisx0213
-      " let &encoding = s:enc_euc
-    " else
-      " let &fileencodings = &fileencodings .','. s:enc_euc
-    " endif
-  " endif
-  " " 定数を処分
-  " unlet s:enc_euc
-  " unlet s:enc_jis
-" endif
-
-" 日本語を含まない場合は fileencoding に encoding を使うようにする
-if has('autocmd')
-    function! AU_ReCheck_FENC()
-        if &fileencoding =~# 'iso-2022-jp' && search("[^\x01-\x7e]", 'n') == 0
-            let &fileencoding=&encoding
-        endif
-    endfunction
-    autocmd BufReadPost * call AU_ReCheck_FENC()
-endif
-
-" cvs,svnの時は文字コードをeuc-jpに設定
-" autocmd FileType cvs :set fileencoding=euc-jp
-" autocmd FileType svn :set fileencoding=utf-8
-
-" 改行コードの自動認識
 set fileformats=unix,dos,mac
-" □とか○の文字があってもカーソル位置がずれないようにする
 if exists('&ambiwidth')
     set ambiwidth=double
 endif
@@ -385,35 +328,7 @@ set tags=tags
 "  set tags=./tags,./../tags,./*/tags,./../../tags,./../../../tags,./../../../../tags,./../../../../../tags
 " endif
 
-" ------------------------------------------------------------------------------
-" 辞書ファイルからの単語補間
-autocmd FileType actionscript set omnifunc=actionscriptcomplete#CompleteAS
-autocmd FileType actionscript :set dictionary=$HOME/.vim/dict/actionscript.dict
-
-" ------------------------------------------------------------------------------
-" PEAR & includes
-" autocmd FileType php :set path+=c:/php/pear,c:/php/includes
-
-" ------------------------------------------------------------------------------
-" :makeでPHP構文チェック
-" autocmd FileType php :set makeprg=php\ -l\ %
-" autocmd FileType php :set errorformat=%m\ in\ %f\ on\ line\ %l
-
-" ------------------------------------------------------------------------------
-" PHP fileencoding UTF-8
-" autocmd FileType php :set fileencoding=utf-8
-
-" ------------------------------------------------------------------------------
-" 文字列中のSQLクエリをハイライト
-" let php_sql_query=1
-" 文字列中のHTMLをハイライト
-" let php_htmlInStrings=1
-" ショートタグ(<?)を無効にする(ハイライト除外)
-" let php_noShortTags=1
-" クラスと関数のfoldingを無効にする
-" let php_folding=1
-
-" 前回終了したカーソル行に移動
+" move to cursor last time left from
 autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal g`\"" | endif
 
 " ------------------------------------------------------------------------------
@@ -429,7 +344,6 @@ nnoremap <Leader>s :IncBufSwitch<CR>
 nnoremap <Leader><C-s> :IncBufSwitch<CR>
 
 " vsplit, split
-nmap <Leader>c :close<CR>
 nmap <Leader>v :vsplit<CR>
 nmap <Leader>s :split<CR>
 
@@ -457,20 +371,6 @@ let g:SeeTabCtermBG="red"
 :endfunction
 " :command! HtmlUnEscape :call HtmlUnEscape()
 
-
-" -----------------------------------------------------------------------------
-" 検索関連
-"
-" 検索文字列が小文字の場合は大文字小文字を区別なく検索する
-set ignorecase
-" 検索文字列に大文字が含まれている場合は区別して検索する
-set smartcase
-" 検索時に最後まで行ったら最初に戻る
-set wrapscan
-" 検索結果文字列をハイライト
-set hls
-" IncrementalSearch
-set incsearch
 
 " -----------------------------------------------------------------------------
 " turn on syntax
@@ -502,14 +402,12 @@ else
 endif
 
 " ------------------------------------------------------------------------------
-" どの文字でタブや改行を表示するかを設定
+" display character for tab and new line
 set listchars=tab:~\ ,extends:<,trail:-,eol:_
-
-" listcharsで指定した文字でタブ・改行・行末スペース・行末を表示する
 set list
 
 " ------------------------------------------------------------------------------
-" 表示行単位で行移動する
+" cursor move
 nnoremap j gj
 nnoremap k gk
 nnoremap gj j
@@ -519,66 +417,27 @@ vnoremap k gk
 vnoremap gj j
 vnoremap gk k
 
-" フレームサイズを怠惰に変更する
-map <kPlus> <C-W>+
-map <kMinus> <C-W>-
-
-" C-]でtjと同等の効果
-nmap <C-]> g<C-]>
-
-" yeでそのカーソル位置にある単語をレジスタに追加
 nmap ye :let @"=expand("<cword>")<CR>
-
-" ------------------------------------------------------------------------------
-" eregex.vim
-" / で行なう通常の検索と :M/ を入れ替える。
-" nnoremap / :M/
-" nnoremap ,/ /
-
-" command mode 時 tcsh風のキーバインドに
-cmap <C-a> <Home>
-cmap <C-f> <Right>
-cmap <C-b> <Left>
-cmap <C-d> <Delete>
-cmap <Esc>b <S-Left>
-cmap <Esc>f <S-Right>
-cnoremap  
-
 
 " yankring setting
 let g:yankring_persist = 0
 
 " ------------------------------------------------------------------------------
-" 補完候補の色づけ for vim7
-hi Pmenu ctermbg=9
-hi PmenuSel ctermbg=1
-hi PmenuSbar ctermbg=3
-
-" ------------------------------------------------------------------------------
-" increment.vim
-" 矩形選択中に<C-A>で連番になるようにインクリメントする
-vnoremap <C-A> :Inc<CR>
-
-" ------------------------------------------------------------------------------
-" 折り畳み
+" fold
 set foldmethod=syntax
-autocmd FileType php :set foldmethod=indent
 autocmd FileType javascript :set foldmethod=indent
 autocmd FileType yaml :set foldmethod=indent
-autocmd FileType actionscript :set foldmethod=indent
-autocmd FileType perl :set foldmethod=indent
 autocmd FileType java :set foldmethod=indent
 
 
 " ------------------------------------------------------------------------------
-" GUIのクリップボードを使う
-" if has('GUI')
-"    set clipboard=unnamed
-" endif
+" use clipboard
+if has('GUI')
+   set clipboard=unnamed
+endif
 
 " ------------------------------------------------------------------------------
 "  map
-"  自動補完
 imap <C-Space> <C-x><C-o>
 
 " ------------------------------------------------------------------------------
@@ -592,37 +451,7 @@ let NERDSpaceDelims = 1
 map <C-x> ,c<space>
 
 " ------------------------------------------------------------------------------
-" CapsLockをCtrlにしていると<C-X>が押しにくいため
-"  modeに<C-S>でも入れるようにする
-inoremap <C-S> <C-X>
-
-" omni completionへのショートカット
-inoremap <C-F> <C-X><C-O>
-
-" ------------------------------------------------------------------------------
-" Emacs Like Key Bind
-inoremap <C-A> <Home>
-inoremap <C-B> <Left>
-" inoremap <C-D> <Del>
-inoremap <C-F> <Right>
-inoremap <C-E> <End>
-
-" ------------------------------------------------------------------------------
-" migemo辞書設定
-if has('migemo')
-    set migemo
-    set migemodict=$VIM/vimfiles/migemo_dict/migemo-dict
-endif
-
-" ------------------------------------------------------------------------------
-" <C-\>でIME切替
-if has('win32')
-    inoremap  
-    cnoremap  
-endif
-
-" ------------------------------------------------------------------------------
-" tagsの生成
+" tags
 " function! Ctags()
     " if &filetype == 'cpp'
         " :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q *.cpp *.h *.hpp
@@ -634,14 +463,6 @@ endif
 " endfunction
 " :command! Ctags :call Ctags()
 map <Leader>rt :!ctags --extra=+f -R *<CR><CR>
-
-" ------------------------------------------------------------------------------
-" vimperatorrcのfiletype
-autocmd BufRead,BufNewFile .vimperatorrc set filetype=vimperator
-
-" ------------------------------------------------------------------------------
-" insert mode中の<C-@>誤発動対策
-inoremap <C-@> <Nop>
 
 " ------------------------------------------------------------------------------
 " session save & load function
@@ -666,13 +487,6 @@ inoremap <C-@> <Nop>
 " unlet file
 
 " ------------------------------------------------------------------------------
-" 関数移動の後にzz
-nnoremap [[ [[zt<C-y><C-y>
-nnoremap [] []zb<C-e><C-e>
-nnoremap ]] ]]zt<C-y><C-y>
-nnoremap ][ ][zb<C-e><C-e>
-
-" ------------------------------------------------------------------------------
 " FZF
 
 function! s:find_git_root()
@@ -691,8 +505,8 @@ nmap <Leader>g :GFiles?<CR>
 " NERDTree
 nmap <Leader>n :NERDTree<CR>
 let g:NERDTreeDirArrows = 1
-let g:NERDTreeDirArrowExpandable = '▸'
-let g:NERDTreeDirArrowCollapsible = '▾'
+let g:NERDTreeDirArrowExpandable = '+'
+let g:NERDTreeDirArrowCollapsible = '-'
 let g:NERDTreeGlyphReadOnly = "RO"
 
 " ------------------------------------------------------------------------------
