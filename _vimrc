@@ -156,7 +156,7 @@ filetype indent on
 " width of indent
 autocmd FileType xhtml :set sw=2
 autocmd FileType html :set sw=2
-autocmd FileType typescript :set sw=2 ts=2
+autocmd FileType typescript.tsx :set sw=2 ts=2
 
 " ------------------------------------------------------------------------------
 " Programming Support
