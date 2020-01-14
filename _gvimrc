@@ -30,6 +30,7 @@ match ZenkakuSpace /Å@/
 " Style
 
 function! DefaultStyle ()
+        set guifont=Menlo:h14
         " set guifont=Andale\ Mono:h12
         " set guifont=M+1VM+IPAG_circle:h12:w7:cSHIFTJIS
         " set guifont=M+2VM+IPAG_circle:h12:w7:cSHIFTJIS
@@ -60,7 +61,7 @@ endif
 let base16colorspace=256  " Access colors present in 256 colorspace
 " colorscheme spacegray
 " colorscheme spacemacs-theme
-colorscheme PaperColor
+colorscheme gruvbox
 
 let g:spacegray_underline_search = 1
 let g:spacegray_italicize_comments = 1

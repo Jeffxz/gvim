@@ -43,6 +43,10 @@ Plugin 'janko-m/vim-test'
 Plugin 'maksimr/vim-jsbeautify'
 Plugin 'vim-syntastic/syntastic'
 Plugin 'neomake/neomake'
+Plugin 'udalov/kotlin-vim'
+Plugin 'tfnico/vim-gradle'
+Plugin 'hsanson/vim-android'
+Plugin 'taglist.vim'
 
 " Markdown / Writting
 Plugin 'reedes/vim-pencil'
@@ -60,7 +64,7 @@ Plugin 'git://git.wincent.com/command-t.git'
 " Plugin 'file:///home/gmarik/path/to/plugin'
 " The sparkup vim script is in a subdirectory of this repo called vim.
 " Pass the path to set the runtimepath properly.
-Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
+" Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
 " Install L9 and avoid a Naming conflict if you've already installed a
 " different version somewhere else.
 " Plugin 'ascenator/L9', {'name': 'newL9'}
@@ -88,13 +92,14 @@ Plugin 'atelierbram/Base2Tone-vim'
 Plugin 'colepeters/spacemacs-theme.vim'
 Plugin 'NLKNguyen/papercolor-theme'
 
-" Language support
+" Programming support
 Plugin 'leafgarland/typescript-vim'
 Plugin 'Shougo/vimproc.vim'
 Plugin 'pangloss/vim-javascript'
 Plugin 'maxmellon/vim-jsx-pretty'
 Plugin 'peitalin/vim-jsx-typescript'
 Plugin 'prettier/vim-prettier', { 'do': 'yarn install', 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
+Plugin 'OmniSharp/omnisharp-vim'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -184,6 +189,12 @@ hi ReduxHooksKeywords ctermfg=204 guifg=#C176A7
 hi WebBrowser ctermfg=204 guifg=#56B6C2
 hi ReactLifeCycleMethods ctermfg=204 guifg=#D19A66
 
+" OmniSharp
+let g:OmniSharp_server_stdio = 1
+let g:OmniSharp_selector_ui = 'fzf'
+if has('unix') || has('macunix')
+  let g:OmniSharp_server_use_mono = 1
+endif
 
 " set modelines=0
 
@@ -340,22 +351,10 @@ nmap <S-Space> :bp<CR>
 nnoremap <Leader>s :IncBufSwitch<CR>
 nnoremap <Leader><C-s> :IncBufSwitch<CR>
 
-" ------------------------------------------------------------------------------
-" encoding
-" nmap <Leader>U :set encoding=utf-8<CR>
-" nmap <Leader>E :set encoding=euc-jp<CR>
-" nmap <Leader>S :set encoding=cp932<CR>
-
-
-" ,e でそのコマンドを実行
-nmap <Leader>e :execute '!' &ft ' %'<CR>
-" カレントバッファを最大化
-nmap <Leader>r :resize<CR>
-
 " vsplit, split
-nmap <F2> :close<CR>
-nmap <F3> :vsplit<CR>
-nmap <F4> :split<CR>
+nmap <Leader>c :close<CR>
+nmap <Leader>v :vsplit<CR>
+nmap <Leader>s :split<CR>
 
 " ------------------------------------------------------------------------------
 " code2html
@@ -364,12 +363,6 @@ let html_use_css = 1
 " SeeTab
 let g:SeeTabCtermFG="black"
 let g:SeeTabCtermBG="red"
-
-" netrw-ftp
-let g:netrw_ftp_cmd="netkit-ftp"
-
-" netrw-http
-let g:netrw_http_cmd="wget -q -O"
 
 " ------------------------------------------------------------------------------
 " html escape function
@@ -437,16 +430,6 @@ set listchars=tab:~\ ,extends:<,trail:-,eol:_
 
 " listcharsで指定した文字でタブ・改行・行末スペース・行末を表示する
 set list
-" set nolist
-
-" -----------------------------------------------------------------------------
-" バッファ移動用キーマップ
-" F2: 前のバッファ
-" F3: 次のバッファ
-" F4: バッファ削除
-" map <F2> <ESC>:bp<CR>
-" map <F3> <ESC>:bn<CR>
-" map <F4> <ESC>:bw<CR>
 
 " ------------------------------------------------------------------------------
 " 表示行単位で行移動する
@@ -628,13 +611,12 @@ nmap <Leader>h :History<CR>
 nmap <Leader>g :GFiles?<CR>
 
 " ------------------------------------------------------------------------------
-" BufExplorer
-nmap <C-@> :BufExplorer<CR>
-
-" ------------------------------------------------------------------------------
-" NERD_tree.vim
-nmap <F5> :NERDTree<CR>
-nmap <F6> :NERDTreeClose<CR>
+" NERDTree
+nmap <Leader>n :NERDTree<CR>
+let g:NERDTreeDirArrows = 1
+let g:NERDTreeDirArrowExpandable = '▸'
+let g:NERDTreeDirArrowCollapsible = '▾'
+let g:NERDTreeGlyphReadOnly = "RO"
 
 " ------------------------------------------------------------------------------
 " taglist.vim
@@ -657,9 +639,9 @@ autocmd BufEnter * if expand("%:p:h") !~ '^/tmp' | silent! lcd %:p:h | endif
 
 " ------------------------------------------------------------------------------
 " calender.vim (with QFixHowm)
-let g:calendar_diary="P:\001_Daily"
+" let g:calendar_diary="P:\001_Daily"
 " need QFixHowm
-let calendar_holidayfile = 'P:\howm\Sche-Hd-0000-00-00-000000.howm'
+" let calendar_holidayfile = 'P:\howm\Sche-Hd-0000-00-00-000000.howm'
 let calendar_action = "QFixHowmCalendarDiary"
 let calendar_sign   = "QFixHowmCalendarSign"
 
