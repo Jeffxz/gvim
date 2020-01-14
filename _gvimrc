@@ -30,22 +30,22 @@ match ZenkakuSpace /Å@/
 " Style
 
 function! DefaultStyle ()
-        set guifont=Menlo:h14
+        if has("gui_win32")
+          set guifont=Consolas:h14:cANSI
+        else
+          set guifont=Menlo:h16
+        end
         " set guifont=Andale\ Mono:h12
         " set guifont=M+1VM+IPAG_circle:h12:w7:cSHIFTJIS
         " set guifont=M+2VM+IPAG_circle:h12:w7:cSHIFTJIS
-        " set guifont=ARISAKA-ìôïù:h12:w7:cSHIFTJIS
-        " set guifont=OsakaÅ|ìôïù:h13:w7:cSHIFTJIS
         " set guifont=Consolas:h12:w7:cSHIFTJIS
-        " set guifont=HG∫ﬁºØ∏M:h10:w5:cSHIFTJIS
-        " set guifont=åÀâzÉSÉVÉbÉN:h13:w7:cSHIFTJIS
         " set guifont=MS_Mincho:h12:w7:cSHIFTJIS
         " set guifont=M+2VM+IPAG_circle:h15:w8:cSHIFTJIS
         " set guifont=M+2VM+IPAG_circle:h12:w7:cSHIFTJIS
     set linespace=1
     set antialias
     " set lines=80
-    set columns=200
+    " set columns=200
 endfunction
 :command! DefaultStyle :call DefaultStyle()
 
