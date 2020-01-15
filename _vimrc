@@ -22,6 +22,7 @@ Plugin 'majutsushi/tagbar'
 Plugin 'ervandew/supertab'
 Plugin 'BufOnly.vim'
 Plugin 'wesQ3/vim-windowswap'
+Plugin 'prabirshrestha/asyncomplete.vim'
 " Plugin 'SirVer/ultisnips'
 Plugin 'junegunn/fzf.vim'
 Plugin 'junegunn/fzf'
@@ -71,7 +72,6 @@ Plugin 'git://git.wincent.com/command-t.git'
 
 " Theme / Interface
 Plugin 'AnsiEsc.vim'
-Plugin 'ryanoasis/vim-devicons'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'sjl/badwolf'
@@ -157,6 +157,8 @@ filetype indent on
 autocmd FileType xhtml :set sw=2
 autocmd FileType html :set sw=2
 autocmd FileType typescript.tsx :set sw=2 ts=2
+autocmd FileType typescript :set sw=2 ts=2
+autocmd FileType json :set sw=2 ts=2
 
 " ------------------------------------------------------------------------------
 " Programming Support
@@ -496,7 +498,7 @@ endfunction
 command! ProjectFiles execute 'Files' s:find_git_root()
 
 " mappings
-nmap <Leader>b :Buffers<CR>
+nmap <C-@> :BufExplorer<CR>
 nnoremap <Leader>f :ProjectFiles<CR>
 nmap <Leader>h :History<CR>
 nmap <Leader>g :GFiles?<CR>
@@ -519,6 +521,20 @@ nmap <C-F7> :TlistClose<CR>
 let mapleader =","
 map <silent><leader>ss :source ~/_vimrc<cr>
 map <silent><leader>ee :e ~/_vimrc<cr>
+
+" ------------------------------------------------------------------------------
+" search
+"
+" ignore case
+set ignorecase
+" can search capital character
+set smartcase
+" return to the first one
+set wrapscan
+" highlight search result
+set hls
+" incremental search
+set incsearch
 
 " ------------------------------------------------------------------------------
 " set current folder
