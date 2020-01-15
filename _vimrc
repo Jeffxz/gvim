@@ -99,8 +99,9 @@ Plugin 'pangloss/vim-javascript'
 Plugin 'maxmellon/vim-jsx-pretty'
 Plugin 'peitalin/vim-jsx-typescript'
 Plugin 'prettier/vim-prettier', { 'do': 'yarn install', 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
+Plugin 'moll/vim-node'
 Plugin 'OmniSharp/omnisharp-vim'
-Plugin 'w0rp/ale'
+" Plugin 'w0rp/ale'
 Plugin 'Quramy/tsuquyomi'
 " Still use the one in plugin folder to keep C-x working
 " Plugin 'preservim/nerdcommenter'
@@ -563,4 +564,6 @@ let howm_filename        = '%Y/%m/%Y-%m-%d-%H%M%S.howm'
 let howm_fileencoding    = 'utf-8'
 let howm_fileformat      = 'unix'
 
+" ------------------------------------------------------------------------------
+" vim-node
 
