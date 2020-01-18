@@ -202,6 +202,9 @@ if has('unix') || has('macunix')
 endif
 if has('win32')
   let g:OmniSharp_server_path = 'C:\tools\omnisharp\omnisharp-win-x64\OmniSharp.exe'
+else
+  let g:OmniSharp_server_use_mono = 1
+  let g:OmniSharp_server_path = '/Users/zhengxu/tools/omnisharp-osx/omnisharp/OmniSharp.exe'
 end
 " Set the type lookup function to use the preview window instead of echoing it
 "let g:OmniSharp_typeLookupInPreview = 1
@@ -276,6 +279,8 @@ nnoremap <Leader>cf :OmniSharpCodeFormat<CR>
 " Start the omnisharp server for the current solution
 nnoremap <Leader>ss :OmniSharpStartServer<CR>
 nnoremap <Leader>sp :OmniSharpStopServer<CR>
+autocmd FileType cs set errorformat=\ %#%f(%l\\\,%c):\ %m
+autocmd FileType cs set makeprg=dotnet\ build\ /property:GenerateFullPaths=true
 
 " set modelines=0
 
