@@ -159,6 +159,7 @@ autocmd FileType xhtml :set sw=2
 autocmd FileType html :set sw=2
 autocmd FileType typescript.tsx :set sw=2 ts=2
 autocmd FileType typescript :set sw=2 ts=2
+autocmd FileType javascript :set sw=2 ts=2
 autocmd FileType json :set sw=2 ts=2
 
 " ------------------------------------------------------------------------------
@@ -166,7 +167,7 @@ autocmd FileType json :set sw=2 ts=2
 "
 " prettier
 let g:prettier#autoformat = 0
-autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
+" autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
 
 " typescript
 autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescript.tsx
